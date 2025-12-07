@@ -48,7 +48,7 @@ def part2(lines):
                 counts[i - 1] += c
                 counts[i + 1] += c
 
-    # Start DFS from the starting position
+    # Return total distinct paths
     return sum(counts)
 
 
