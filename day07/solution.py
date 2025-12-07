@@ -36,33 +36,20 @@ def part2(lines):
     splits at each splitter (^).
     """
 
-    # Initialize starting variables and height
-    start_row, start_col = 1, lines[0].find("S")
-    height = len(lines)
+    # Initialize starting counts
+    counts = [0] * len(lines[0])
+    counts[lines[0].find("S")] = 1
 
-    # Memoization dict
-    memo = {}
-
-    def dfs(row, col):
-        # Base case
-        if row >= height:
-            return 1
-        # Check memoization
-        key = (row, col)
-        if key in memo:
-            return memo[key]
-        # Check if there is a splitter at this position
-        if lines[row][col] == "^":
-            total = dfs(row + 1, col - 1) + dfs(row + 1, col + 1)
-        else:
-            total = dfs(row + 1, col)
-
-        # Store in memo and return
-        memo[key] = total
-        return total
+    # Process each row below the starting row
+    for line in lines[1:]:
+        for i, c in enumerate(counts):
+            if line[i] == "^":
+                counts[i] = 0
+                counts[i - 1] += c
+                counts[i + 1] += c
 
     # Start DFS from the starting position
-    return dfs(start_row, start_col)
+    return sum(counts)
 
 
 if __name__ == "__main__":
